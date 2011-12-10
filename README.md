@@ -1,7 +1,7 @@
 Fiddle Retriever
 ================
 
-This is currently a simple JavaScript project allowing to retrieve all fiddles of a specified user from [jsfiddle.net](http://jsfiddle.net). Part of the project is also a page for retrieving and printing all fiddles in stringified JSON format.
+This is currently a simple JavaScript project allowing to retrieve all fiddles of a specified user from [jsfiddle.net](http://jsfiddle.net). Part of the project is also a page for retrieving and printing all fiddles in stringified JSON format. You can access the page *[HERE](http://dzejkej.github.com/jsfiddle-utils/jsfiddleretriever.html)*.
 
 Data are retrieved using a combination of JSFiddle's own JSONP service (to retrieve fiddle list) and YQL to retrieve a HTML content of every fiddle and save HTML/CSS/JS code.
 
