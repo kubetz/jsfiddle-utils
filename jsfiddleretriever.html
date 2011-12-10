@@ -3,16 +3,48 @@
 <head>
 	<title>Fiddle Backup</title>
 	<meta charset="utf-8" />
-	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="https://raw.github.com/padolsey/jQuery-Plugins/master/cross-domain-ajax/jquery.xdomainajax.js"></script>
 	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-buttons.js"></script>
 	<script src="jsfiddleutils.js"></script>
+	<script>
+		jQuery.fn.selectText = function() {
+			var doc = document;
+			var element = this[0];
+			if (doc.body.createTextRange) {
+				var range = document.body.createTextRange();
+				range.moveToElementText(element);
+				range.select();
+			} else if (window.getSelection) {
+				var selection = window.getSelection();
+				if (selection.setBaseAndExtent) {
+					selection.setBaseAndExtent(element, 0, element, 1);
+				} else {
+					var range = document.createRange();
+					range.selectNodeContents(element);
+					selection.removeAllRanges();
+					selection.addRange(element);
+				}
+			}
+		};
+	</script>
+
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
 	<style>
-		.error {
+		input {
+			border-width: 2px;
+		}
+		input.error {
 			border-color: #ee5f5b;
 		}
 		h1 {
 			text-align: center;
+		}
+		#output {
+			overflow: auto;
+			height: 600px;
+			margin-top: 5px;
 		}
 	</style>
 </head>
@@ -31,8 +63,8 @@
 				<button id="retrieve" class="btn primary" data-loading-text="Retrieving...">Retrieve</button>
 			</div>
 		</div>
-		<span class="label">Results:</span>
-		<div id="results">
+		<button id="results" class="btn disabled">Results</button>
+		<div id="output">
 			<pre></pre>
 		</div>
 	</div>
@@ -41,18 +73,28 @@
 		$(function() {
 			$('#retrieve').click(function() {
 				var username = $('input#username').val();
+				// username cannot be empty - signalize error
 				if (username === "") {
 					$('#username').addClass('error');
 					return;
 				}
+				// make surre the error is cleared
 				$('#username').removeClass('error');
+				// switch the text on the Retrieve button into loading text
 				$('#retrieve').button('loading');
 				jsfiddle.retrieve(username, function(data) {
-					$('#results pre').text(JSON.stringify(data));
-					$('#retrieve').button('reset')
-				}, function(xhr, status, error) {
-					$('#results pre').text(error);
-					$('#retrieve').button('reset')
+					// show results into the pre
+					$('#output pre').text(JSON.stringify(data));
+					// reset the Retrieve button
+					$('#retrieve').button('reset');
+					// transform Results into a button to select text
+					var button = $('#results');
+					button.removeClass('disabled');
+					button.addClass('success');
+					button.text('Select');
+					button.click(function() {
+						$('#output pre').selectText();
+					});
 				});
 			});
 		});
