@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Fiddle Backup</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-buttons.js"></script>
+	<script src="jsfiddleutils.js"></script>
+	<style>
+		.error {
+			border-color: #ee5f5b;
+		}
+		h1 {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Fiddle Retriever</h1>
+		<div class="row">
+			<div class="span9">
+				<p>
+					This simple page retrieves all <a href="http://jsfiddle.net">jsfiddle.net</a> data of a specified user and displays them on the page in the JSON format.
+					You can save them process them later for various purposes.
+				</p>
+			</div>
+			<div class="span7">
+				<input id="username" class="xlarge" type="text" placeholder="insert an username" />
+				<button id="retrieve" class="btn primary" data-loading-text="Retrieving...">Retrieve</button>
+			</div>
+		</div>
+		<span class="label">Results:</span>
+		<div id="results">
+			<pre></pre>
+		</div>
+	</div>
+
+	<script>
+		$(function() {
+			$('#retrieve').click(function() {
+				var username = $('input#username').val();
+				if (username === "") {
+					$('#username').addClass('error');
+					return;
+				}
+				$('#username').removeClass('error');
+				$('#retrieve').button('loading');
+				jsfiddle.retrieve(username, function(data) {
+					$('#results pre').text(JSON.stringify(data));
+					$('#retrieve').button('reset')
+				}, function(xhr, status, error) {
+					$('#results pre').text(error);
+					$('#retrieve').button('reset')
+				});
+			});
+		});
+	</script>
+</body>
+</html>
