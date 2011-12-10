@@ -7,7 +7,7 @@ Data are retrieved using a combination of JSFiddle's own JSONP service (to retri
 
 ### Usage
 
-First of all make sure you have jQuery 1.6.4+ available and that have fiddleutils.js included.
+First of all make sure you have jQuery 1.6.4+ available and that have jsfiddleutils.js included.
 
 ```javascript
 jsfiddle.retrieve(username, options, callback);
