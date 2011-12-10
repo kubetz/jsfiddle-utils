@@ -1,7 +1,7 @@
 Fiddle Retriever
 ================
 
-This is currently a simple JavaScript project allowing to retrieve all fiddles of a specified user from [jsfiddle.net](http://jsfiddle.net). Part of the project is also a page for retrieving and printing all fiddles in stringified JSON format. You can access the page *[HERE](http://dzejkej.github.com/jsfiddle-utils/jsfiddleretriever.html)*.
+This is currently a simple JavaScript project allowing to retrieve all fiddles of a specified user from [jsfiddle.net](http://jsfiddle.net). Part of this project is also a page for retrieving and printing all fiddles in stringified JSON format. You can access the page **[HERE](http://dzejkej.github.com/jsfiddle-utils/jsfiddleretriever.html)**.
 
 Data are retrieved using a combination of JSFiddle's own JSONP service (to retrieve fiddle list) and YQL to retrieve a HTML content of every fiddle and save HTML/CSS/JS code.
 
@@ -13,13 +13,13 @@ First of all make sure you have jQuery 1.6.4+ available and that have jsfiddleut
 jsfiddle.retrieve(username, options, callback);
 ```
 
-*Where*:
+**Where**:
 
-* _username_ - name of the user you want to retrieve all fiddles from
-* _options_ - jsfiddle's webservice options (see [documentation](http://doc.jsfiddle.net/api/fiddles.html))
-* _callback(data)_ - callback function that will get called when data are available
+* *username* - name of the user you want to retrieve all fiddles from
+* *options* - jsfiddle's webservice options (see [documentation](http://doc.jsfiddle.net/api/fiddles.html))
+* *callback(data)* - callback function that will get called when data are available
 
-*Data* (see [documentation](http://doc.jsfiddle.net/api/fiddles.html)):
+**Data Structure** (see [documentation](http://doc.jsfiddle.net/api/fiddles.html)):
 
 ```javascript
   "status": "ok",
