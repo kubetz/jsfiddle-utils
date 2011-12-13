@@ -5,34 +5,34 @@ var jsfiddle = (function($) {
         order: 'asc',
         limit: 100000
     };
-    // "public" object that will get returned
+    
     return {
-        retrieve: function(user, options, success) {
-            // options were not specified => params are (user, success)
+        retrieve: function(user, options, callback) {
+            // options were not specified => params are (user, callback)
             if (typeof options === 'function') {
-                sucess = options;
+                callback = options;
                 options = {};
             }
-            // merge default options with user options
+            // merge default options with the given ones
             options = $.extend({}, defaults, options);
             // regexp for extracting fiddle IDs
-            var idRE = new RegExp("/" + escape(user) + "/([^/]+)/");
+            var idRE = new RegExp('/' + user + '/([^/]+)/'); 
             // retrieve list of fiddles using JSONP service
             $.ajax({
                 // see http://doc.jsfiddle.net/api/fiddles.html
-                url: 'http://jsfiddle.net/api/user/' + escape(user) + '/demo/list.json',
+                url: 'http://jsfiddle.net/api/user/' + user + '/demo/list.json',
                 dataType: 'jsonp',
                 type: 'GET',
                 data: options,
                 success: function(data) {
-                    var fiddles = data.list, maxCount = fiddles.length, currentCount = 0;
-                    // for each fiddle ..
+                    var fiddles = data.list, xhrs = [];
+                    // loop through all fiddles and request code for each of them                    
                     $.each(fiddles, function(i, fiddle) {
                         // take the fiddle ID from the url
-                        var fiddleID = idRE.exec(fiddle.url)[1];
+                        var fiddleID = idRE.exec(this.url)[1];
                         // retrieve the fiddle using x-domain plug-in (channeling through YQL)
-                        $.ajax({
-                            url: 'http://jsfiddle.net/' + escape(user) + '/' + fiddleID,
+                        xhrs.push($.ajax({
+                            url: 'http://jsfiddle.net/' + user + '/' + fiddleID,
                             type: 'GET',
                             success: function(fiddlePage) {
                                 // retrieve CSS, HTML and JS and save them to the fiddle object
@@ -40,16 +40,11 @@ var jsfiddle = (function($) {
                                 fiddle.code_js = $content.find('textarea#id_code_js').text();
                                 fiddle.code_css = $content.find('textarea#id_code_css').text();
                                 fiddle.code_html = $content.find('textarea#id_code_html').text();
-                            },
-                            complete: function() {
-                                currentCount++;
-                                // if we completed all fiddle requests, call success and pass data
-                                if (currentCount === maxCount) {
-                                    sucess.call(this, fiddles);
-                                }
                             }
-                        });
+                        }));
                     });
+                    // call callback when all $.ajax calls are complete
+                    $.when.apply(this, xhrs).then(function() { callback.call(this, fiddles); });
                 }
             });
         }
