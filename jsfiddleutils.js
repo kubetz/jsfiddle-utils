@@ -37,7 +37,6 @@ var jsfiddle = (function($) {
                             success: function(fiddlePage) {
                                 // retrieve CSS, HTML and JS and save them to the fiddle object
                                 var $content = $('div#content', fiddlePage.responseText);
-                                console.log($content);
                                 fiddle.code_js = $content.find('textarea#id_code_js').text();
                                 fiddle.code_css = $content.find('textarea#id_code_css').text();
                                 fiddle.code_html = $content.find('textarea#id_code_html').text();
