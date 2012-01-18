@@ -5,7 +5,7 @@ var jsfiddle = (function($) {
         order: 'asc',
         limit: 100000
     };
-    
+
     return {
         retrieve: function(user, options, callback) {
             // options were not specified => params are (user, callback)
@@ -16,7 +16,7 @@ var jsfiddle = (function($) {
             // merge default options with the given ones
             options = $.extend({}, defaults, options);
             // regexp for extracting fiddle IDs
-            var idRE = new RegExp('/' + user + '/([^/]+)/'); 
+            var idRE = new RegExp('/' + user + '/([^/]+)/');
             // retrieve list of fiddles using JSONP service
             $.ajax({
                 // see http://doc.jsfiddle.net/api/fiddles.html
@@ -26,7 +26,7 @@ var jsfiddle = (function($) {
                 data: options,
                 success: function(data) {
                     var fiddles = data.list, xhrs = [];
-                    // loop through all fiddles and request code for each of them                    
+                    // loop through all fiddles and request code for each of them
                     $.each(fiddles, function(i, fiddle) {
                         // take the fiddle ID from the url
                         var fiddleID = idRE.exec(this.url)[1];
@@ -36,7 +36,8 @@ var jsfiddle = (function($) {
                             type: 'GET',
                             success: function(fiddlePage) {
                                 // retrieve CSS, HTML and JS and save them to the fiddle object
-                                var $content = $($(fiddlePage.responseText).find('div#content'));
+                                var $content = $('div#content', fiddlePage.responseText);
+                                console.log($content);
                                 fiddle.code_js = $content.find('textarea#id_code_js').text();
                                 fiddle.code_css = $content.find('textarea#id_code_css').text();
                                 fiddle.code_html = $content.find('textarea#id_code_html').text();
