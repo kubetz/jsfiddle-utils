@@ -4,32 +4,6 @@
 	<title>Fiddle Backup</title>
 	<meta charset="utf-8" />
 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-	<script src="https://raw.github.com/padolsey/jQuery-Plugins/master/cross-domain-ajax/jquery.xdomainajax.js"></script>
-	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-buttons.js"></script>
-	<script src="jsfiddleutils.js"></script>
-	<script>
-		jQuery.fn.selectText = function() {
-			var doc = document;
-			var element = this[0];
-			if (doc.body.createTextRange) {
-				var range = document.body.createTextRange();
-				range.moveToElementText(element);
-				range.select();
-			} else if (window.getSelection) {
-				var selection = window.getSelection();
-				if (selection.setBaseAndExtent) {
-					selection.setBaseAndExtent(element, 0, element, 1);
-				} else {
-					var range = document.createRange();
-					range.selectNodeContents(element);
-					selection.removeAllRanges();
-					selection.addRange(element);
-				}
-			}
-		};
-	</script>
-
 	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
 	<style>
 		input {
@@ -68,7 +42,31 @@
 		</div>
 	</div>
 
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="https://rawgithub.com/padolsey/jQuery-Plugins/master/cross-domain-ajax/jquery.xdomainajax.js" ></script>
+	<script src="http://twitter.github.com/bootstrap/1.4.0/bootstrap-buttons.js"></script>
+	<script src="jsfiddleutils.js"></script>
 	<script>
+		jQuery.fn.selectText = function() {
+			var doc = document;
+			var element = this[0];
+			if (doc.body.createTextRange) {
+				var range = document.body.createTextRange();
+				range.moveToElementText(element);
+				range.select();
+			} else if (window.getSelection) {
+				var selection = window.getSelection();
+				if (selection.setBaseAndExtent) {
+					selection.setBaseAndExtent(element, 0, element, 1);
+				} else {
+					var range = document.createRange();
+					range.selectNodeContents(element);
+					selection.removeAllRanges();
+					selection.addRange(element);
+				}
+			}
+		};
+
 		$(function() {
 			$('#retrieve').click(function() {
 				var username = $('input#username').val();
